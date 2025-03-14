@@ -1,0 +1,34 @@
+# Node.js modules
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Production builds
+build/
+dist/
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Vercel and deployment
+.vercel/

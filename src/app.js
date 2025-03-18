@@ -26,12 +26,33 @@ import politicasRoutes from "./routes/politicas.routes.js";
 dotenv.config();
 
 const app = express();
+// Lista de orígenes permitidos
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:3000",
+  "http://localhost:8081",
+  "exp://192.168.43.241:8081",
+];
 
 // Configuración de CORS
-app.use(cors({
-    origin: "http://localhost:5173",
-    credentials: true
-}));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Acceso no permitido"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+// Configuración de CORS
+// app.use(cors({
+//     origin: "http://localhost:5173",
+//     credentials: true
+// }));
 
 app.use(morgan("dev"));
 app.use(express.json());

@@ -32,8 +32,8 @@ const app = express();
 
 // Configuración de CORS
 app.use(cors({
-    origin: ' * ' ,
-    credentials: true
+  origin: true, // Permite todos los dominios, pero no es compatible con `credentials: true`
+  credentials: false // Debes desactivar las credenciales
 }));
 
 // aactuakizacion de coors

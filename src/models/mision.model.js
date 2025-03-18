@@ -17,7 +17,10 @@ const misionSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
-
+        estado: {
+            type: Boolean,
+            default: true,
+        },
     },
     {
         timestamps: true,
@@ -25,5 +28,3 @@ const misionSchema = new mongoose.Schema(
 );
 
 export default mongoose.model('Mision', misionSchema);
-
-

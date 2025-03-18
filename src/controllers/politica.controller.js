@@ -1,10 +1,10 @@
 import Politica from '../models/politicas.model.js';
 import mongoose from 'mongoose';
 
-// Obtener todas las políticas
+// Obtener todas las políticas activas
 export const getPoliticas = async (req, res) => {
     try {
-        const politicas = await Politica.find({}).populate('user', 'name email');
+        const politicas = await Politica.find().populate('user', 'name email');
         res.json(politicas);
     } catch (error) {
         return res.status(500).json({ message: "Hubo un fallo al obtener las políticas" });
@@ -18,10 +18,10 @@ export const createPolitica = async (req, res) => {
             return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
         }
 
-        const { title, description, user } = req.body;
+        const { title, description } = req.body;
 
-        // Validar si el usuario existe
-        const existingUser = await mongoose.model('User').findById(user);
+        // Verificar que el usuario que crea la política existe
+        const existingUser = await mongoose.model('User').findById(req.user.id);
         if (!existingUser) {
             return res.status(404).json({ message: "Usuario no encontrado" });
         }
@@ -30,12 +30,13 @@ export const createPolitica = async (req, res) => {
             title,
             description,
             user: existingUser._id,
+            estado: true, // La política se crea activa por defecto
         });
 
         const savedPolitica = await newPolitica.save();
         res.status(201).json(savedPolitica);
     } catch (error) {
-        console.log(error);
+        console.error(error);
         return res.status(500).json({ message: "Hubo un fallo al crear la política" });
     }
 };
@@ -66,7 +67,7 @@ export const deletePolitica = async (req, res) => {
     }
 };
 
-// Actualizar una política
+// Actualizar una política (incluyendo el estado)
 export const updatePolitica = async (req, res) => {
     try {
         if (req.user.role !== 'admin') {
@@ -97,3 +98,27 @@ export const updatePolitica = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+// Nueva función para cambiar el estado de la política (activar o desactivar)
+export const updateEstadoPolitica = async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
+        }
+
+        const { id } = req.params;
+        const { estado } = req.body; // true o false
+
+        const politica = await Politica.findByIdAndUpdate(id, { estado }, { new: true });
+
+        if (!politica) {
+            return res.status(404).json({ message: "Política no encontrada" });
+        }
+
+        res.json({ message: `Estado actualizado a ${estado ? 'activo' : 'inactivo'}`, politica });
+    } catch (error) {
+        return res.status(500).json({ message: "Hubo un fallo al actualizar el estado" });
+    }
+};
+
+

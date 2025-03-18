@@ -28,4 +28,3 @@ router.delete('/visiones/:id', authRequired, deleteVision);
 router.put('/visiones/:id', authRequired, updateVision);
 
 export default router;
-

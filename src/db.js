@@ -1,7 +1,7 @@
 // Este archivo configura la conexión a la base de datos MongoDB utilizando Mongoose.
 // La función `connectDB` establece la conexión y maneja errores si la conexión falla.
 
-import mongoose from "mongoose"; // Importar mongoose para trabajar con MongoDB
+import mongoose from "mongoose"; 
 
 // Función para conectar a la base de datos MongoDB
 export const connectDB = async () => {

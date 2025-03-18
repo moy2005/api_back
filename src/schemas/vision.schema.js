@@ -14,12 +14,7 @@ export const createVisionSchema = z.object({
     }).min(1, {
         message: 'La descripción no puede estar vacía',
     }),
-    user: z.string({
-        required_error: 'El ID del usuario es obligatorio',
-        invalid_type_error: 'El ID del usuario debe ser un texto',
-    }).min(1, {
-        message: 'El ID del usuario no puede estar vacío',
-    }),
+   
 });
 
 // Esquema para la actualización de una visión
@@ -33,11 +28,6 @@ export const updateVisionSchema = z.object({
         invalid_type_error: 'La descripción debe ser un texto',
     }).min(1, {
         message: 'La descripción no puede estar vacía',
-    }).optional(),
-    user: z.string({
-        invalid_type_error: 'El ID del usuario debe ser un texto',
-    }).min(1, {
-        message: 'El ID del usuario no puede estar vacío',
     }).optional(),
 });
 

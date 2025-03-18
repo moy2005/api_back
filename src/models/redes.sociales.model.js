@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
-const politicaSchema = new mongoose.Schema(
+const redesSocialesSchema = new mongoose.Schema(
     {
-        title: {
+        plataforma: {
             type: String,
             required: true,
             trim: true,
         },
-        description: {
+        enlace: {
             type: String,
             required: true,
             trim: true,
@@ -17,14 +17,10 @@ const politicaSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
-        estado: {
-            type: Boolean,
-            default: true,
-        },
     },
     {
         timestamps: true,
     }
 );
 
-export default mongoose.model('Politica', politicaSchema);
+export default mongoose.model('RedesSociales', redesSocialesSchema);

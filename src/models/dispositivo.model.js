@@ -15,7 +15,7 @@ const dispositivoSchema = new mongoose.Schema(
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "User",
-            default:null,
+            default: null,
         }
     },
     {
@@ -23,5 +23,6 @@ const dispositivoSchema = new mongoose.Schema(
     }
 );
 
-export const Dispositivo = mongoose.model("Dispositivo", dispositivoSchema);
+// ✅ Exportación con 'default' para evitar problemas de importación
+export default mongoose.model("Dispositivo", dispositivoSchema);
 

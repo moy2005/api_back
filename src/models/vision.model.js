@@ -17,6 +17,10 @@ const visionSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
+        estado: {
+            type: Boolean,
+            default: true,
+        },
 
     },
     {

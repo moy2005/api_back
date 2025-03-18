@@ -236,9 +236,9 @@ export const getUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
-        }
+        //if (req.user.role !== 'admin') {
+          //  return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
+        //}
 
         const { realName, lastName, email, phoneNumber, password, secretWord, role } = req.body;
 

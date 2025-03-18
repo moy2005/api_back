@@ -1,10 +1,10 @@
 import Mision from '../models/mision.model.js';
 import mongoose from 'mongoose';
 
-// Obtener todas las misiones
+// Obtener todas las misiones activas
 export const getMisiones = async (req, res) => {
     try {
-        const misiones = await Mision.find({}).populate('user', 'name email');
+        const misiones = await Mision.find().populate('user', 'name email');
         res.json(misiones);
     } catch (error) {
         return res.status(500).json({ message: "Hubo un fallo al obtener las misiones" });
@@ -14,37 +14,32 @@ export const getMisiones = async (req, res) => {
 // Crear una misión
 export const createMision = async (req, res) => {
     try {
-      // Verificar si el usuario es administrador
-      if (req.user.role !== 'admin') {
-        return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
-      }
-  
-      // Obtener el ID del usuario desde el token
-      const userId = req.user.id;
-  
-      const { title, description } = req.body;
-  
-      // Validar si el usuario existe
-      const existingUser = await mongoose.model('User').findById(userId);
-      if (!existingUser) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
-      }
-  
-      // Crear la misión
-      const newMision = new Mision({
-        title,
-        description,
-        user: existingUser._id, // Asociar la misión al usuario autenticado
-      });
-  
-      const savedMision = await newMision.save();
-      res.status(201).json(savedMision);
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({ message: "Hubo un fallo al crear la misión" });
-    }
-  };
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
+        }
 
+        const { title, description } = req.body;
+
+        // Verificar que el usuario que crea la misión existe
+        const existingUser = await mongoose.model('User').findById(req.user.id);
+        if (!existingUser) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        const newMision = new Mision({
+            title,
+            description,
+            user: existingUser._id,
+            estado: true, // La misión se crea activa por defecto
+        });
+
+        const savedMision = await newMision.save();
+        res.status(201).json(savedMision);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Hubo un fallo al crear la misión" });
+    }
+};
 
 // Obtener una misión por ID
 export const getMision = async (req, res) => {
@@ -72,7 +67,7 @@ export const deleteMision = async (req, res) => {
     }
 };
 
-// Actualizar una misión
+// Actualizar una misión (incluyendo el estado)
 export const updateMision = async (req, res) => {
     try {
         if (req.user.role !== 'admin') {
@@ -104,3 +99,26 @@ export const updateMision = async (req, res) => {
     }
 };
 
+// Nueva función para cambiar el estado de la misión (activar o desactivar)
+/*export const updateEstadoMision = async (req, res) => {
+    try {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
+        }
+
+        const { id } = req.params;
+        const { estado } = req.body; // true o false
+
+        const mision = await Mision.findByIdAndUpdate(id, { estado }, { new: true });
+
+        if (!mision) {
+            return res.status(404).json({ message: "Misión no encontrada" });
+        }
+
+        res.json({ message: `Estado actualizado a ${estado ? 'activo' : 'inactivo'}`, mision });
+    } catch (error) {
+        return res.status(500).json({ message: "Hubo un fallo al actualizar el estado" });
+    }
+};
+
+*/

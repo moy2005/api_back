@@ -2,6 +2,7 @@ import EstadoDispositivo from '../models/estadoDispositivo.model.js';
 import Dispositivo from '../models/dispositivo.model.js';
 
 // Guardar estado del dispositivo enviado desde ESP32
+// Guardar o actualizar estado del dispositivo enviado desde ESP32
 export const saveEstadoDispositivo = async (req, res) => {
     try {
         const { 
@@ -23,31 +24,36 @@ export const saveEstadoDispositivo = async (req, res) => {
             console.log(`Dispositivo con MAC ${macAddress} no registrado pero se guardará su estado`);
         }
 
-        // Crear nuevo registro de estado
-        const nuevoEstado = new EstadoDispositivo({
-            macAddress,
-            temperatura,
-            humedad,
-            humedadSuelo,
-            luz,
-            ventanaAbierta,
-            ventiladorActivo,
-            ventiladorVelocidad,
-            riegoActivo
-        });
+        // Buscar y actualizar el estado del dispositivo si ya existe
+        const estadoActualizado = await EstadoDispositivo.findOneAndUpdate(
+            { macAddress }, // Criterio de búsqueda
+            {
+                temperatura,
+                humedad,
+                humedadSuelo,
+                luz,
+                ventanaAbierta,
+                ventiladorActivo,
+                ventiladorVelocidad,
+                riegoActivo,
+                updatedAt: new Date() // Actualizar la fecha de modificación
+            },
+            { 
+                upsert: true, // Crear un nuevo documento si no existe
+                new: true // Devuelve el documento actualizado
+            }
+        );
 
-        // Guardar en la base de datos
-        const estadoGuardado = await nuevoEstado.save();
-        
         res.status(201).json({ 
-            message: "Estado del dispositivo guardado con éxito",
-            estado: estadoGuardado
+            message: "Estado del dispositivo guardado/actualizado con éxito",
+            estado: estadoActualizado
         });
     } catch (error) {
-        console.error('Error al guardar estado del dispositivo:', error);
-        res.status(500).json({ message: "Error al guardar el estado del dispositivo", error: error.message });
+        console.error('Error al guardar/actualizar estado del dispositivo:', error);
+        res.status(500).json({ message: "Error al guardar/actualizar el estado del dispositivo", error: error.message });
     }
 };
+
 
 // Obtener historial de estados de un dispositivo por MAC
 export const getEstadosByMac = async (req, res) => {

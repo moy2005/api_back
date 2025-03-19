@@ -31,10 +31,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors({
-  origin: (origin, callback) => {
-      callback(null, true); // Permite cualquier origen
-  },
-  credentials: true // Habilita credenciales (por ejemplo, cookies)
+  origin: true, // Refleja automáticamente el origen
+  credentials: true
 }));
 
 

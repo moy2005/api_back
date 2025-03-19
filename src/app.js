@@ -30,11 +30,13 @@ dotenv.config();
 
 const app = express();
 
-// Configuración de CORS
 app.use(cors({
-  origin: true, // Permite todos los dominios, pero no es compatible con `credentials: true`
-  credentials: false // Debes desactivar las credenciales
+  origin: (origin, callback) => {
+      callback(null, true); // Permite cualquier origen
+  },
+  credentials: true // Habilita credenciales (por ejemplo, cookies)
 }));
+
 
 // aactuakizacion de coors
 

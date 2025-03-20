@@ -25,6 +25,7 @@ import dispositivo from "./routes/dispositivos.routes.js";
 import ubicacion from "./routes/ubicacion.routes.js";
 import redesSociales from "./routes/redes.sociales.routes.js";
 import estadoDispositivo from "./routes/estadoDispositivo.routes.js"
+import historialAcciones from "./routes/historial.acciones.routes.js"
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -79,5 +80,6 @@ app.use("/api", dispositivo);
 app.use("/api", ubicacion);
 app.use("/api", redesSociales);
 app.use("/api", estadoDispositivo);
+app.use("/api",historialAcciones)
 
 export default app;

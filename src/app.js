@@ -33,13 +33,31 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors({
-  origin: true, // Refleja automáticamente el origen
-  credentials: true
-}));
 
 
 // aactuakizacion de coors
+const allowedOrigins = [
+  "http://localhost:8081", // Origen de tu frontend
+  "http://localhost:5173" // Origen de producción
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
+      if (!origin) return callback(null, true);
+
+      // Verificar si el origen está en la lista de permitidos
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Origen no permitido por CORS"));
+      }
+    },
+    credentials: true, // Permitir el envío de cookies o autenticación
+  })
+);
+
 
 app.use(morgan("dev"));
 app.use(express.json());

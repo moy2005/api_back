@@ -36,11 +36,29 @@ const app = express();
 
 
 // aactuakizacion de coors
-app.use(cors({
-  origin:true,
-  credentials:true
-}));
+//app.use(cors({
+  //origin:true,
+  //credentials:true
+//}));
 
+const allowedOrigins = process.env.FRONTEND_URL.split(",");
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Permitir solicitudes sin origen (como aplicaciones móviles o curl)
+      if (!origin) return callback(null, true);
+
+      // Verificar si el origen está en la lista de permitidos
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Origen no permitido por CORS"));
+      }
+    },
+    credentials: true, // Permitir el envío de cookies o autenticación
+  })
+);
 
 app.use(morgan("dev"));
 app.use(express.json());

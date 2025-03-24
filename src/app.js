@@ -46,7 +46,7 @@ const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split
 // Add development origins for local testing
 if (process.env.NODE_ENV !== 'production') {
   // Add common development ports
-  ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081', 'http://localhost:8080','https://agristorem.netlify.app/'].forEach(origin => {
+  ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081', 'http://localhost:8080','https://agristorem.netlify.app'].forEach(origin => {
     if (!allowedOrigins.includes(origin)) {
       allowedOrigins.push(origin);
     }

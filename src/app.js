@@ -39,6 +39,8 @@ const app = express();
   //origin:true,
   //credentials:true
 //}));
+// cjbkdsbjkdsbvjkdjbv
+// jnkdsjkvbbkds
 
 // Replace your current CORS configuration with this
 const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(",") : [];

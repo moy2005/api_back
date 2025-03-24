@@ -35,23 +35,23 @@ dotenv.config();
 const app = express();
 
 // aactuakizacion de coors
-app.use(cors({
-  origin:true,
-  credentials:true
-}));
+//app.use(cors({
+  //origin:true,
+  //credentials:true
+//}));
 
 // Replace your current CORS configuration with this
-//const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(",") : [];
+const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(",") : [];
 
 // Add development origins for local testing
-//if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production') {
   // Add common development ports
-  //['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081', 'http://localhost:8080'].forEach(origin => {
-    //if (!allowedOrigins.includes(origin)) {
-      //allowedOrigins.push(origin);
-    //}
-  //});
-//}
+  ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081', 'http://localhost:8080'].forEach(origin => {
+    if (!allowedOrigins.includes(origin)) {
+      allowedOrigins.push(origin);
+    }
+  });
+}
 
 app.use(
   cors({

@@ -18,7 +18,7 @@ router.get('/ubicaciones', getUbicaciones);
 // Ruta para obtener una ubicación específica por su ID (pública)
 router.get('/ubicaciones/:id', getUbicacion);
 
-// Ruta para crear una nueva ubicación (requiere autenticación)
+// Ruta para crear una nueva ubicación (requiere autenticación y validación de esquema)
 router.post('/ubicaciones', authRequired, validateSchema(createUbicacionSchema), createUbicacion);
 
 // Ruta para eliminar una ubicación por su ID (requiere autenticación)

@@ -18,7 +18,7 @@ export const createUbicacion = async (req, res) => {
             return res.status(403).json({ message: "Acción no permitida. Solo para administradores." });
         }
 
-        const { nombre, direccion, ciudad, pais, codigoPostal } = req.body;
+        const { nombre, latitud, longitud } = req.body;
 
         // Verificar que el usuario que crea la ubicación existe
         const existingUser = await mongoose.model('User').findById(req.user.id);
@@ -28,10 +28,8 @@ export const createUbicacion = async (req, res) => {
 
         const newUbicacion = new Ubicacion({
             nombre,
-            direccion,
-            ciudad,
-            pais,
-            codigoPostal,
+            latitud,
+            longitud,
             user: existingUser._id,
         });
 

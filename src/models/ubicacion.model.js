@@ -7,25 +7,13 @@ const ubicacionSchema = new mongoose.Schema(
             required: true,
             trim: true,
         },
-        direccion: {
-            type: String,
+        latitud: {
+            type: Number,
             required: true,
-            trim: true,
         },
-        ciudad: {
-            type: String,
+        longitud: {
+            type: Number,
             required: true,
-            trim: true,
-        },
-        pais: {
-            type: String,
-            required: true,
-            trim: true,
-        },
-        codigoPostal: {
-            type: String,
-            required: true,
-            trim: true,
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,

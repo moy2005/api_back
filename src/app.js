@@ -27,6 +27,7 @@ import redesSociales from "./routes/redes.sociales.routes.js";
 import estadoDispositivo from "./routes/estadoDispositivo.routes.js"
 import historialAcciones from "./routes/historial.acciones.routes.js"
 import mqttRoutes from "./routes/mqtt.routes.js"
+import actuatorRoutes from "./routes/dispositivos.routes.js";
 
 // Cargar las variables de entorno
 dotenv.config();
@@ -35,7 +36,7 @@ const app = express();
 
 app.use(cors({
   origin: true, // Refleja automáticamente el origen
-  credentials: true
+  credentials:true
 }));
 
 
@@ -83,5 +84,6 @@ app.use("/api", redesSociales);
 app.use("/api", estadoDispositivo);
 app.use("/api",historialAcciones)
 app.use("/api",mqttRoutes)
+app.use('/api/actuadores', actuatorRoutes);
 
 export default app;

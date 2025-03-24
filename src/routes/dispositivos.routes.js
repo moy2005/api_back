@@ -8,6 +8,7 @@ import {
     deleteDispositivo,
     getDispositivosByUserId  // Controlador para eliminar un dispositivo
 } from '../controllers/dispositivos.controller.js';
+import { controlActuator } from '../controllers/actuadorController.js';
 import { validateSchema } from '../middlewares/validator.middlewar.js'; // Middleware para validar los datos según un esquema
 import { createDispositivoSchema } from '../schemas/dispositivo.schema.js'; // Esquema de validación para la creación de dispositivos
 
@@ -29,6 +30,8 @@ router.delete('/dispositivos/:id', authRequired, deleteDispositivo);
 router.put('/dispositivos/:id', authRequired, updateDispositivo);
 
 router.get('/usuarios/:userId/dispositivos', getDispositivosByUserId);
+
+router.post('/control-actuador', controlActuator);
 
 export default router;
 

@@ -5,4 +5,4 @@ export const GMAIL_USER = "martinezmoy919@gmail.com"
 export const GMAIL_PASS = "vkqm aorb oinu rdut"
 
 //Frontend URL
-export const FRONTEND_URL="http://localhost:5173"
+export const FRONTEND_URL="http://localhost:5173,http://localhost:8081"

@@ -34,13 +34,42 @@ dotenv.config();
 
 const app = express();
 
+// aactuakizacion de coors
 app.use(cors({
-  origin: true, // Refleja automáticamente el origen
+  origin:true,
   credentials:true
 }));
 
+// Replace your current CORS configuration with this
+//const allowedOrigins = process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(",") : [];
 
-// aactuakizacion de coors
+// Add development origins for local testing
+//if (process.env.NODE_ENV !== 'production') {
+  // Add common development ports
+  //['http://localhost:3000', 'http://localhost:5173', 'http://localhost:8081', 'http://localhost:8080'].forEach(origin => {
+    //if (!allowedOrigins.includes(origin)) {
+      //allowedOrigins.push(origin);
+    //}
+  //});
+//}
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      // Check if the origin is in the allowed list
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log(`Origin ${origin} not allowed by CORS`);
+        callback(new Error("Origen no permitido por CORS"));
+      }
+    },
+    credentials: true, // Allow credentials
+  })
+);
 
 app.use(morgan("dev"));
 app.use(express.json());

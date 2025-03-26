@@ -12,10 +12,9 @@ import { TOKEN_SECRET, FRONTEND_URL, GMAIL_USER, GMAIL_PASS } from '../config.js
 import userModel from '../models/user.model.js'
 
 // Controlador para registrar un nuevo usuario
+// Controlador para registrar un nuevo usuario
 export const register = async (req, res) => {
     const { email, password, realName, lastName, phoneNumber, secretWord, role } = req.body;
-
-
 
     try {
         // Validación de campos requeridos
@@ -29,19 +28,11 @@ export const register = async (req, res) => {
             return res.status(400).json(["El correo ya está en uso"]);
         }
 
-
-
         // Encriptar contraseña
         const passwordHash = await bcrypt.hash(password, 10);
 
-
-
-        // Generar código de verificación
-        const verificationCode = crypto.randomBytes(3).toString('hex');
-        const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000); // Expira en 10 minutos
-
-        // Crear nuevo usuario en memoria (pendiente de verificación)
-        const pendingUser = {
+        // Crear nuevo usuario con los campos de verificación como null y isVerified en true
+        const newUser = new User({
             email,
             password: passwordHash,
             realName,
@@ -49,29 +40,17 @@ export const register = async (req, res) => {
             phoneNumber,
             secretWord,
             role: role || "cliente",
-            verificationCode,
-            verificationCodeExpires,
-            isVerified: false
-        };
+            verificationCode: null,
+            verificationCodeExpires: null,
+            isVerified: true
+        });
 
-        // Guardar los datos del usuario en la sesión (pendiente de verificación)
-        req.session.pendingUser = pendingUser;
-
-        // Enviar correo de verificación
-        try {
-            await transporter.sendMail({
-                to: email,
-                subject: 'Código de verificación',
-                text: `Tu código de verificación es: ${verificationCode}. Este código expira en 10 minutos.`,
-            });
-        } catch (emailError) {
-            console.error('Error al enviar email:', emailError);
-            // No retornamos error aquí para no bloquear el registro
-        }
+        // Guardar el usuario en la base de datos
+        await newUser.save();
 
         // Responder exitosamente
         return res.status(201).json({
-            message: 'Usuario registrado. Por favor, verifica tu correo.',
+            message: 'Usuario registrado exitosamente',
             success: true
         });
 

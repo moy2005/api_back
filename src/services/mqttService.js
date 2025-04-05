@@ -1,7 +1,7 @@
 import mqtt from 'mqtt';
 
 // Configuración del cliente MQTT
-const client = mqtt.connect("ws://raba7554.ala.dedicated.aws.emqxcloud.com:8083/mqtt", {
+const client = mqtt.connect("ws://m6209e92.ala.dedicated.aws.emqxcloud.com:8083/mqtt", {
     username: "moy19",
     password: "moy19"
 });
